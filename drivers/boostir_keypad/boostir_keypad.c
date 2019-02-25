@@ -25,65 +25,63 @@
 #define ENABLE_DEBUG (0)
 #include "debug.h"
 
-static void _key_pressed(void* arg)
+static void _key_pressed(void *arg)
 {
-    boostir_keypad_t* const device = (boostir_keypad_t*)arg;
-    const boostir_keypad_params_t* const params = &device->params;
+    boostir_keypad_t *const device = (boostir_keypad_t *)arg;
+    const boostir_keypad_params_t *const params = &device->params;
     const xtimer_ticks32_t ticks = { .ticks32 = 100 };
 
     unsigned char i = 0;
     unsigned char key_num = BOOSTIR_KEYPAD_NONE;
 
-	for (i = 0; i < 4; i++)
-	{
+    for (i = 0; i < 4; i++) {
         gpio_init(params->out_pins[0], GPIO_IN);
         gpio_init(params->out_pins[1], GPIO_IN);
         gpio_init(params->out_pins[2], GPIO_IN);
         gpio_init(params->out_pins[3], GPIO_IN);
 
-		switch(i)
-		{
-		case 0:
-            gpio_init(params->out_pins[2], GPIO_OUT);
-            gpio_clear(params->out_pins[2]);
-            break;
-		case 1:
-            gpio_init(params->out_pins[1], GPIO_OUT);
-            gpio_clear(params->out_pins[1]);
-            break;
-		case 2:
-            gpio_init(params->out_pins[0], GPIO_OUT);
-            gpio_clear(params->out_pins[0]);
-            break;
-		case 3:
-            gpio_init(params->out_pins[3], GPIO_OUT);
-            gpio_clear(params->out_pins[3]);
-            break;
-		}
+        switch (i) {
+            case 0:
+                gpio_init(params->out_pins[2], GPIO_OUT);
+                gpio_clear(params->out_pins[2]);
+                break;
+            case 1:
+                gpio_init(params->out_pins[1], GPIO_OUT);
+                gpio_clear(params->out_pins[1]);
+                break;
+            case 2:
+                gpio_init(params->out_pins[0], GPIO_OUT);
+                gpio_clear(params->out_pins[0]);
+                break;
+            case 3:
+                gpio_init(params->out_pins[3], GPIO_OUT);
+                gpio_clear(params->out_pins[3]);
+                break;
+        }
 
         xtimer_spin(ticks);
 
         // find the pressed button row
-		if(gpio_read(params->in_pins[2]) == 0) {
-			key_num = (0 + i * 4  + 1);
+        if (gpio_read(params->in_pins[2]) == 0) {
+            key_num = (0 + i * 4  + 1);
             break;
         }
 
-		if(gpio_read(params->in_pins[1]) == 0) {
-			key_num = (1 + i * 4  + 1);
+        if (gpio_read(params->in_pins[1]) == 0) {
+            key_num = (1 + i * 4  + 1);
             break;
         }
 
-		if(gpio_read(params->in_pins[0]) == 0) {
-			key_num = (2 + i * 4  + 1);
+        if (gpio_read(params->in_pins[0]) == 0) {
+            key_num = (2 + i * 4  + 1);
             break;
         }
 
-		if(gpio_read(params->in_pins[3]) == 0) {
-			key_num = (3 + i * 4  + 1);
+        if (gpio_read(params->in_pins[3]) == 0) {
+            key_num = (3 + i * 4  + 1);
             break;
         }
-	}
+    }
 
     gpio_init(params->out_pins[0], GPIO_OUT);
     gpio_init(params->out_pins[1], GPIO_OUT);
@@ -97,12 +95,12 @@ static void _key_pressed(void* arg)
 
     device->key = key_num;
 
-    if(key_num != BOOSTIR_KEYPAD_NONE && params->cb) {
+    if (key_num != BOOSTIR_KEYPAD_NONE && params->cb) {
         params->cb(key_num, params->cb_arg);
     }
 }
 
-void boostir_keypad_init(boostir_keypad_t* device, const boostir_keypad_params_t* params)
+void boostir_keypad_init(boostir_keypad_t *device, const boostir_keypad_params_t *params)
 {
     memcpy(&device->params, params, sizeof(boostir_keypad_params_t));
     device->key = BOOSTIR_KEYPAD_NONE;
@@ -123,17 +121,16 @@ void boostir_keypad_init(boostir_keypad_t* device, const boostir_keypad_params_t
     gpio_clear(params->out_pins[3]);
 }
 
-uint8_t boostir_keypad_pressed_key(const boostir_keypad_t* device)
+uint8_t boostir_keypad_pressed_key(const boostir_keypad_t *device)
 {
     return device->key;
 }
 
-const char* boostir_keypad_key_name(const boostir_keypad_t* device, uint8_t key)
+const char *boostir_keypad_key_name(const boostir_keypad_t *device, uint8_t key)
 {
     (void)device;
 
-    switch(key)
-    {
+    switch (key) {
         case BOOSTIR_KEYPAD_OK: return "OK";
         case BOOSTIR_KEYPAD_COPY: return "Copy";
         case BOOSTIR_KEYPAD_TEMP_MINUS: return "Temp-";

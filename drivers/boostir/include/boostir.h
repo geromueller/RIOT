@@ -75,14 +75,14 @@ typedef struct boostir_rx_info {
  * @param[out] dev          device descriptor
  * @param[in]  params       parameters for device initialization
  */
-void boostir_setup(boostir_t* dev, const boostir_params_t* params);
+void boostir_setup(boostir_t *dev, const boostir_params_t *params);
 
 /**
  * @brief   Trigger a hardware reset and configure BOOST-IR with default values
  *
  * @param[in,out] dev       device to reset
  */
-void boostir_reset(boostir_t* dev);
+void boostir_reset(boostir_t *dev);
 
 /**
  * @name    Set default configuration parameters for the BOOST-IR driver
@@ -98,7 +98,7 @@ void boostir_reset(boostir_t* dev);
 
 #ifndef BOOSTIR_PARAMS
 #define BOOSTIR_PARAMS    { .tx_pin = BOOSTIR_PARAM_TX_PIN, \
-                                .rx_pin = BOOSTIR_PARAM_RX_PIN }
+                            .rx_pin = BOOSTIR_PARAM_RX_PIN }
 #endif
 
 #ifndef BOOSTIR_TX_OUT
