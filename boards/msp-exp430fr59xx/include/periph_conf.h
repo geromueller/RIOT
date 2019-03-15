@@ -27,6 +27,8 @@ extern "C"
 {
 #endif
 
+#include "msp430_regs.h"
+
 /**
  * @name    Clock configuration
  * @{
